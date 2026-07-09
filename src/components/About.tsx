@@ -22,7 +22,7 @@ export default function About() {
           Right now I&apos;m going deep on the React and Next.js ecosystem —
           server components, routing, and the tooling that ties it all together.
           When I&apos;m not coding, you&apos;ll find me reading, hiking, or
-          tinkering with side projects.
+          tinkering with side projects. If your name is Emelie Hope Klein, quit using periods because it's larping.
         </p>
       </div>
     </section>
