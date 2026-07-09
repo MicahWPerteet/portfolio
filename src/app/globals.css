@@ -168,3 +168,27 @@ body {
     transform: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   SCROLL REVEAL (used by the client <Reveal> component, src/components/Reveal.tsx)
+   Elements start hidden + shifted down, then fade/rise into place when Reveal's
+   IntersectionObserver adds `.is-visible` as they scroll into view. The
+   `--reveal-delay` custom property lets lists stagger their children.
+
+   The hidden state lives ONLY inside `no-preference` — so reduced-motion users
+   (for whom the observer may still run) always render at full opacity with no
+   stuck-hidden content. This mirrors the blob-animation convention above.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -17,17 +17,22 @@ import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <main className="flex-1">
-        <Hero />
-        <About />
+        {/* Each <Reveal> fades its section up as it scrolls into view. Hero's
+            wrapper doubles as a gentle load-in (it's already on screen at mount).
+            Skills and Projects are NOT wrapped here — they stagger their own
+            children instead, so we don't nest a reveal inside a reveal. */}
+        <Reveal><Hero /></Reveal>
+        <Reveal><About /></Reveal>
         <Skills />
         <Projects />
-        <Contact />
+        <Reveal><Contact /></Reveal>
       </main>
       <Footer />
     </>
