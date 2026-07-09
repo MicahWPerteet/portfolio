@@ -17,12 +17,35 @@ export default function Contact() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
+  // Extra UI state: are we mid-request, and did anything go wrong?
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); // stop the browser's default full-page reload
-    // In a real app you'd send this data to an API here.
-    console.log("Message submitted:", { name, email, message });
-    setSent(true);
+    setSending(true);
+    setError("");
+
+    try {
+      // POST the form data to our own API route (src/app/api/contact/route.ts),
+      // which sends the email server-side.
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong.");
+      }
+
+      setSent(true); // swap in the thank-you message
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -83,11 +106,19 @@ export default function Contact() {
             />
           </div>
 
+          {/* Show an error message if the request failed */}
+          {error && (
+            <p className="text-sm font-medium text-red-500" role="alert">
+              {error}
+            </p>
+          )}
+
           <button
             type="submit"
-            className="btn-accent glow-lift rounded-2xl px-6 py-3 text-sm font-semibold"
+            disabled={sending} // prevent double-submits while the request is in flight
+            className="btn-accent glow-lift rounded-2xl px-6 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Send message
+            {sending ? "Sending…" : "Send message"}
           </button>
         </form>
       )}
