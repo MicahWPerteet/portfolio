@@ -28,17 +28,18 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200/70 bg-white/80 backdrop-blur dark:border-zinc-800/70 dark:bg-black/70">
+    // `glass` makes the whole bar a frosted, translucent sticky strip.
+    <header className="glass sticky top-0 z-50 border-x-0 border-t-0">
       <nav className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
-        <a href="#" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-          Micah<span className="text-indigo-600">.</span>
+        <a href="#" className="text-lg font-bold text-heading">
+          Micah<span className="text-accent">.</span>
         </a>
 
         {/* Desktop menu — hidden on small screens (hidden ... sm:flex) */}
-        <ul className="hidden gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-300 sm:flex">
+        <ul className="hidden gap-8 text-sm font-medium text-foreground sm:flex">
           {links.map((link) => (
             <li key={link.href}>
-              <a href={link.href} className="hover:text-indigo-600 dark:hover:text-indigo-400">
+              <a href={link.href} className="transition-colors hover:text-accent">
                 {link.label}
               </a>
             </li>
@@ -46,10 +47,11 @@ export default function Navbar() {
         </ul>
 
         {/* Hamburger button — only visible on small screens (sm:hidden).
+            A circular glass button with the glow-lift hover effect.
             onClick flips `open` to its opposite value. */}
         <button
           onClick={() => setOpen(!open)}
-          className="text-zinc-700 dark:text-zinc-200 sm:hidden"
+          className="glass glow-lift flex h-10 w-10 items-center justify-center rounded-full text-heading sm:hidden"
           aria-label="Toggle menu"
           aria-expanded={open}
         >
@@ -60,13 +62,13 @@ export default function Navbar() {
 
       {/* The mobile dropdown renders ONLY when `open` is true */}
       {open && (
-        <ul className="flex flex-col gap-1 border-t border-zinc-200 px-6 py-3 text-sm font-medium text-zinc-700 dark:border-zinc-800 dark:text-zinc-200 sm:hidden">
+        <ul className="flex flex-col gap-1 px-6 pb-4 text-sm font-medium text-foreground sm:hidden">
           {links.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
                 onClick={() => setOpen(false)} // close the menu after a tap
-                className="block py-2 hover:text-indigo-600 dark:hover:text-indigo-400"
+                className="block rounded-xl px-3 py-2 transition-colors hover:text-accent"
               >
                 {link.label}
               </a>

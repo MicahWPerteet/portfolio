@@ -8,10 +8,11 @@ export default function About() {
       id="about"
       className="mx-auto w-full max-w-5xl px-6 py-20"
     >
-      <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+      <h2 className="text-2xl font-bold tracking-tight text-heading sm:text-3xl">
         About
       </h2>
-      <div className="mt-4 max-w-3xl space-y-4 text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+      {/* A large frosted glass panel — the blobs show through the blur */}
+      <div className="glass mt-6 max-w-3xl space-y-4 rounded-3xl p-8 text-lg leading-8 text-foreground">
         <p>
           I&apos;m a developer who enjoys turning ideas into clean, reliable web
           apps. I care about the details: fast load times, sensible layouts, and

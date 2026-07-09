@@ -27,22 +27,22 @@ export default function Contact() {
 
   return (
     <section id="contact" className="mx-auto w-full max-w-5xl px-6 py-20">
-      <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+      <h2 className="text-2xl font-bold tracking-tight text-heading sm:text-3xl">
         Get in touch
       </h2>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 text-muted">
         Have a project in mind or just want to say hi? Send a message.
       </p>
 
       {sent ? (
         // After submit, swap the form out for a confirmation message
-        <div className="mt-8 rounded-xl border border-green-200 bg-green-50 p-6 text-green-800 dark:border-green-900 dark:bg-green-950 dark:text-green-300">
-          Thanks, {name || "friend"}! Your message has been received. 🎉
+        <div className="glass mt-8 rounded-2xl p-6 text-foreground">
+          Thanks, <span className="font-semibold text-accent">{name || "friend"}</span>! Your message has been received. 🎉
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="mt-8 max-w-xl space-y-4">
+        <form onSubmit={handleSubmit} className="glass mt-8 max-w-xl space-y-5 rounded-3xl p-8">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label htmlFor="name" className="mb-2 block text-sm font-medium text-foreground">
               Name
             </label>
             <input
@@ -51,12 +51,12 @@ export default function Contact() {
               required
               value={name}                              // value comes FROM state
               onChange={(e) => setName(e.target.value)} // typing writes TO state
-              className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:ring-indigo-900"
+              className="glass-field w-full rounded-xl px-4 py-2.5 text-heading placeholder:text-muted"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground">
               Email
             </label>
             <input
@@ -65,12 +65,12 @@ export default function Contact() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:ring-indigo-900"
+              className="glass-field w-full rounded-xl px-4 py-2.5 text-heading placeholder:text-muted"
             />
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label htmlFor="message" className="mb-2 block text-sm font-medium text-foreground">
               Message
             </label>
             <textarea
@@ -79,13 +79,13 @@ export default function Contact() {
               rows={4}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:ring-indigo-900"
+              className="glass-field w-full rounded-xl px-4 py-2.5 text-heading placeholder:text-muted"
             />
           </div>
 
           <button
             type="submit"
-            className="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+            className="btn-accent glow-lift rounded-2xl px-6 py-3 text-sm font-semibold"
           >
             Send message
           </button>

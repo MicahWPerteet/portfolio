@@ -12,15 +12,16 @@ export default function Projects() {
       id="projects"
       className="mx-auto w-full max-w-5xl px-6 py-20"
     >
-      <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+      <h2 className="text-2xl font-bold tracking-tight text-heading sm:text-3xl">
         Projects
       </h2>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 text-muted">
         A few things I&apos;ve built.
       </p>
 
-      {/* A responsive grid: 1 column on phones, 2 on larger screens */}
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+      {/* A responsive grid: 1 column on phones, 2 on larger screens.
+          Extra gap gives the raised cards room for their shadows. */}
+      <div className="mt-8 grid gap-8 sm:grid-cols-2">
         {projects.map((project) => (
           <ProjectCard key={project.title} {...project} />
         ))}

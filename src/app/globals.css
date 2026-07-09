@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   GLASSMORPHISM DESIGN TOKENS
+   The "frosted glass" look = translucent panels that BLUR whatever is behind
+   them (backdrop-filter), a thin light border, and a soft shadow. Because the
+   panels are see-through, we put drifting accent-colored blobs behind the whole
+   page (see Background.tsx) so the glass has something colorful to blur.
+   --------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --surface: #e0e5ec; /* base page color, sits behind the blobs */
+  --foreground: #52606d; /* body text — dark enough to stay readable */
+  --heading: #2d3748; /* headings — higher contrast */
+  --muted: #7b8794; /* secondary text */
+  --accent: #5b8def; /* soft blue accent */
+  --accent-strong: #3f74e0; /* accent hover/active */
+
+  /* Glass surface: white with partial transparency so the blobs show through */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 8px 32px rgba(31, 45, 90, 0.12);
+  --glass-blur: 14px;
+  --accent-glow: rgba(91, 141, 239, 0.35); /* colored glow used on hover */
+
+  /* Background blob colors — deep, muted tones so the backdrop stays calm */
+  --blob-1: #6b83bf;
+  --blob-2: #5b6a94;
 }
 
+/* Expose our tokens to Tailwind so we can write text-heading, text-accent, etc. */
 @theme inline {
-  --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-heading: var(--heading);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --font-sans: var(--font-satoshi);
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark glass: swap the color + glass tokens and the whole UI flips. In dark mode
+   the "glass" is a dark tint (not white) so text stays readable. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --surface: #2d3138;
+    --foreground: #b7c0cc;
+    --heading: #eef2f6;
+    --muted: #8a94a1;
+    --accent: #6f9df5;
+    --accent-strong: #8bb0f8;
+
+    --glass-bg: rgba(40, 44, 52, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    --accent-glow: rgba(111, 157, 245, 0.4);
+
+    /* Darker, deep-navy blobs so the dark theme stays clean and moody */
+    --blob-1: #2b3a66;
+    --blob-2: #24304d;
   }
 }
 
 body {
-  background: var(--background);
+  background: var(--surface);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* ---------------------------------------------------------------------------
+   REUSABLE GLASS UTILITIES
+   Defined once here, used across every component. The verbose blur/border/shadow
+   values live in one place instead of being repeated inline.
+   --------------------------------------------------------------------------- */
+@layer components {
+  /* GLASS: a frosted, translucent panel. `backdrop-filter` blurs whatever is
+     painted behind it (the drifting accent blobs). */
+  .glass {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* GLOW-LIFT: the Vercel-style hover. The element rises and casts a growing,
+     accent-colored glow. Add it to any interactive glass element. */
+  .glow-lift {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    cursor: pointer;
+  }
+  .glow-lift:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      var(--glass-shadow),
+      0 14px 40px var(--accent-glow); /* the colored glow */
+    border-color: var(--accent);
+  }
+  .glow-lift:active {
+    transform: translateY(-1px);
+  }
+
+  /* Accent-FILLED button: makes the accent color pop as a primary action. Pair
+     with .glow-lift so the resting accent glow grows on hover. */
+  .btn-accent {
+    background: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 8px 24px var(--accent-glow);
+  }
+  .btn-accent:hover {
+    background: var(--accent-strong);
+  }
+
+  /* Glass form fields + a clear accent focus ring for accessibility. We set the
+     outline in plain CSS because Tailwind's outline-width utility alone doesn't
+     set an outline STYLE. */
+  .glass-field {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .glass-field:focus {
+    border-color: var(--accent);
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--accent-glow);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   BACKGROUND BLOBS (rendered by Background.tsx)
+   Big, heavily-blurred circles of accent color that slowly drift. They live
+   BEHIND everything; the glass panels blur them for the frosted effect.
+   --------------------------------------------------------------------------- */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(110px); /* softer, so it reads as a calm wash, not a bright spot */
+  opacity: 0.4;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .blob-a {
+    animation: drift-a 26s ease-in-out infinite alternate;
+  }
+  .blob-b {
+    animation: drift-b 32s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes drift-a {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(90px, 60px) scale(1.1); }
+}
+@keyframes drift-b {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-80px, 50px) scale(1.08); }
+}
+
+/* Respect users who prefer reduced motion: no blob drift, no hover lift. */
+@media (prefers-reduced-motion: reduce) {
+  .glow-lift:hover,
+  .glow-lift:active {
+    transform: none;
+  }
 }

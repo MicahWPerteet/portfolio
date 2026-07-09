@@ -17,21 +17,23 @@ export default function ProjectCard({
   repoUrl,
 }: Project) {
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900">
-      <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+    // A frosted glass card. The hover rise + accent glow comes from `glow-lift`.
+    <article className="glass glow-lift flex h-full flex-col rounded-3xl p-7">
+      <h3 className="text-lg font-semibold text-heading">
         {title}
       </h3>
 
-      <p className="mt-2 flex-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 flex-1 text-sm leading-relaxed text-foreground">
         {description}
       </p>
 
-      {/* Render the tags by mapping the string array to <span> elements */}
-      <div className="mt-4 flex flex-wrap gap-2">
+      {/* Render the tags by mapping the string array to <span> elements.
+          Each tag is a small accent-tinted pill. */}
+      <div className="mt-5 flex flex-wrap gap-2">
         {tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
+            className="rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent"
           >
             {tag}
           </span>
@@ -40,11 +42,11 @@ export default function ProjectCard({
 
       {/* Conditionally render links only if a URL was provided.
           `{liveUrl && (...)}` means: render the link ONLY when liveUrl exists. */}
-      <div className="mt-5 flex gap-4 text-sm font-medium">
+      <div className="mt-6 flex gap-4 text-sm font-medium">
         {liveUrl && (
           <a
             href={liveUrl}
-            className="text-indigo-600 hover:underline dark:text-indigo-400"
+            className="text-accent transition-colors hover:text-accent-strong"
           >
             Live demo →
           </a>
@@ -52,7 +54,7 @@ export default function ProjectCard({
         {repoUrl && (
           <a
             href={repoUrl}
-            className="text-zinc-600 hover:underline dark:text-zinc-400"
+            className="text-muted transition-colors hover:text-foreground"
           >
             Source code
           </a>

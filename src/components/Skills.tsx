@@ -14,10 +14,10 @@ import SkillBadge from "./SkillBadge";
 export default function Skills() {
   return (
     <section id="skills" className="mx-auto w-full max-w-5xl px-6 py-20">
-      <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+      <h2 className="text-2xl font-bold tracking-tight text-heading sm:text-3xl">
         Skills &amp; Tools
       </h2>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 text-muted">
         Technologies I work with day to day.
       </p>
 

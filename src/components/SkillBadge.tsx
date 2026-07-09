@@ -13,7 +13,8 @@ interface SkillBadgeProps {
 
 export default function SkillBadge({ label }: SkillBadgeProps) {
   return (
-    <span className="rounded-full border border-zinc-200 bg-white px-4 py-1.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:border-indigo-400 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-indigo-500 dark:hover:text-indigo-400">
+    // A frosted glass pill with the glow-lift hover (rise + accent glow).
+    <span className="glass glow-lift inline-block rounded-full px-4 py-2 text-sm font-medium text-foreground hover:text-accent">
       {label}
     </span>
   );
