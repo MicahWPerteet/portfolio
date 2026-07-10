@@ -18,7 +18,7 @@ const TO_EMAIL = "micah.perteet@gmail.com";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, message } = await request.json();
+    const { name, email, message, rating } = await request.json();
 
     // Basic validation — never trust data coming from the client.
     if (!name || !email || !message) {
@@ -27,6 +27,14 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
+
+    // Rating is OPTIONAL. Coerce to an integer and clamp to 0..5; anything
+    // missing or bogus becomes 0, which we render as "not provided" below.
+    const stars = Math.min(5, Math.max(0, Math.round(Number(rating)) || 0));
+    const ratingLine =
+      stars > 0
+        ? `Rating: ${"★".repeat(stars)}${"☆".repeat(5 - stars)} (${stars}/5)`
+        : "Rating: not provided";
 
     // The API key comes from an environment variable (see .env.local), never
     // hard-coded. We create the client HERE (inside the handler) rather than at
@@ -51,7 +59,7 @@ export async function POST(request: Request) {
       // inbox replies straight to them.
       replyTo: email,
       subject: `New portfolio message from ${name}`,
-      text: `From: ${name} <${email}>\n\n${message}`,
+      text: `From: ${name} <${email}>\n${ratingLine}\n\n${message}`,
     });
 
     if (error) {
